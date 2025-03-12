@@ -12,7 +12,8 @@ Based in Classless Addressing with support to Classful.
 
 #### Example Test
 
-![[Test.png]]
+![image](https://github.com/user-attachments/assets/2066c6fb-fa34-4c05-b2d3-6f75e68930de)
+
 
 #### Features
 
