@@ -78,14 +78,18 @@ ping_network() {
             done
         done
 
-    else 
-        local hosts=$(( (2**(mask_bits % 8)) ))
-        for (( i=0; i<=hosts; i++ )); do
-            for (( j=0; j<=255; j++ )); do
-                for (( k=0; k<=255; k++ )); do
-                    for (( l=1; l<=254; l++ )); do
-                        local target="$i.$j.$k.$l"
-                        ping -c 1 $target | grep -i "ttl" | awk '{print $4}' | sed "s/://g" &
+else 
+    local bits=(128 64 32 16 8 4 2 1)
+
+    if (( mask_bits < 8 )); then
+        for (( x=0; x<mask_bits; x++ )); do 
+            for (( i=0; i<=mask_bits; i=${bits[x]} )); do
+                for (( j=0; j<=255; j++ )); do
+                    for (( k=0; k<=255; k++ )); do
+                        for (( l=1; l<=254; l++ )); do
+                            local target="$i.$j.$k.$l"
+                            ping -c 1 $target | grep -i "ttl" | awk '{print $4}' | sed "s/://g" &
+                        done
                     done
                 done
             done
@@ -93,6 +97,8 @@ ping_network() {
     fi
 
     wait  
+fi
+ 
 }
 
 
@@ -110,4 +116,3 @@ main() {
 main
 
 
-##Ajustar ping_network, visto que cada octeto o max de address eh 254
