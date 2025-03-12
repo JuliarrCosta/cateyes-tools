@@ -1,13 +1,13 @@
 # cateyes-tools
 
-Based in Classless Addressing with support to Classful.
+Based on Classless Addressing with support for Classful.
 
 #### Methods 
 
 | Method        | Description                                                           |
 | ------------- | --------------------------------------------------------------------- |
 | validate_ip() | Verify ip address format, valid mask and octet.                       |
-| host_number   | Calculate host number                                                 |
+| host_number   | Calculate the number of hosts                                                 |
 | ping_network  | Ping all host in the network using the concept of CIDR in all octets. |
 
 #### Example Test
