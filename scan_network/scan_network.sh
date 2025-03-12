@@ -51,18 +51,16 @@ host_number(){
 
 ping_network() {
 
-    local hosts=$((2**(32 - mask_bits) - 2))  
-
     if (( mask_bits >= 24 )); then
-        
-        for (( i=1; i<=254; i++ )); do
+        local hosts=$(host_number)
+        for (( i=1; i<=$hosts; i++ )); do
             local target="$oct1.$oct2.$oct3.$i"
             ping -c 1 $target | grep -i "ttl" | awk '{print $4}' | sed "s/://g" &
         done
 
     elif (( mask_bits >= 16 && mask_bits < 24 )); then
-        
-        for (( i=0; i<=255; i++ )); do
+        local hosts=$(( (2**(mask_bits % 8)) ))
+        for (( i=0; i<=$hosts; i++ )); do
             for (( j=1; j<=254; j++ )); do
                 local target="$oct1.$oct2.$i.$j"
                 ping -c 1 $target | grep -i "ttl" | awk '{print $4}' | sed "s/://g" &
@@ -70,8 +68,8 @@ ping_network() {
         done
 
     elif (( mask_bits >= 8 && mask_bits < 16 )); then
-        
-        for (( i=0; i<=255; i++ )); do
+        local hosts=$(( (2**(mask_bits % 8)) ))
+        for (( i=0; i<=$hosts; i++ )); do
             for (( j=0; j<=255; j++ )); do
                 for (( k=1; k<=254; k++ )); do
                     local target="$oct1.$i.$j.$k"
@@ -80,9 +78,9 @@ ping_network() {
             done
         done
 
-    else  # mask_bits < 8
-        
-        for (( i=0; i<=255; i++ )); do
+    else 
+        local hosts=$(( (2**(mask_bits % 8)) ))
+        for (( i=0; i<=hosts; i++ )); do
             for (( j=0; j<=255; j++ )); do
                 for (( k=0; k<=255; k++ )); do
                     for (( l=1; l<=254; l++ )); do
